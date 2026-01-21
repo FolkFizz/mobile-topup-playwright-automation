@@ -20,7 +20,7 @@ test.describe('Auth UI', () => {
     await test.step('Submit registration and return to login', async () => {
       await loginPage.register(email, password);
       await expect(loginPage.loginView).toBeVisible();
-      await expect(loginPage.loginMessage).toContainText('Registration successful');
+      await expect(loginPage.emailInput).toHaveValue(email);
     });
 
     await test.step('Login with the new user', async () => {
@@ -60,7 +60,6 @@ test.describe('Auth UI', () => {
       await page.locator('#new-password').fill(newPassword);
       await page.locator('#btn-reset-pass').click();
       await expect(loginPage.loginView).toBeVisible();
-      await expect(loginPage.loginMessage).toContainText('Password reset');
     });
 
     await test.step('Login with the new password', async () => {

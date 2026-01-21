@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { AuthController } from '../../src/api/auth.controller';
 import { LoginPage } from '../../src/pages/login.page';
 import { TopupPage } from '../../src/pages/topup.page';
-import { randomEmail } from '../../src/utils/generator';
+import { randomEmail, randomPhone } from '../../src/utils/generator';
 
 type ParsedTimestamp = {
   date: Date;
@@ -12,11 +12,11 @@ type ParsedTimestamp = {
 const BANGKOK_TIMEZONE = 'Asia/Bangkok';
 
 function formatBangkok(date: Date): string {
-  const formatter = new Intl.DateTimeFormat('en-GB', {
+  const formatter = new Intl.DateTimeFormat('sv-SE', {
     timeZone: BANGKOK_TIMEZONE,
-    day: '2-digit',
-    month: '2-digit',
     year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
@@ -49,6 +49,7 @@ test.describe('Checkout E2E', () => {
     const topupPage = new TopupPage(page);
     const auth = new AuthController(request);
     const email = randomEmail('e2e');
+    const phone = randomPhone();
     const password = 'Pass1234';
 
     const baseAmount = 1199 + 49;
@@ -66,6 +67,7 @@ test.describe('Checkout E2E', () => {
     });
 
     await test.step('Configure the top-up package', async () => {
+      await topupPage.fillPhone(phone);
       await topupPage.selectPackageByValue('1199');
       await expect(topupPage.packageSelect).toHaveValue('1199');
       await topupPage.toggleAddon(true);
@@ -84,6 +86,8 @@ test.describe('Checkout E2E', () => {
     await test.step('Verify success modal with transaction ID', async () => {
       await expect(topupPage.modalSuccess).toBeVisible();
       await expect(topupPage.modalTxnId).toHaveText(/TXN-/);
+      await topupPage.closeModalButton.click();
+      await expect(topupPage.modalOverlay).toHaveAttribute('aria-hidden', 'true');
     });
 
     await test.step('Validate history timestamp and amount', async () => {
@@ -99,7 +103,7 @@ test.describe('Checkout E2E', () => {
       const parsedValue = parsed as ParsedTimestamp;
 
       const now = new Date();
-      expect(parsedValue.formatted).toMatch(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/);
+      expect(parsedValue.formatted).toMatch(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/);
       const diffMs = Math.abs(now.getTime() - parsedValue.date.getTime());
       expect(diffMs).toBeLessThanOrEqual(120000);
 
