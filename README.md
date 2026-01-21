@@ -1,3 +1,5 @@
+[![Playwright Tests](https://github.com/FolkFizz/mobile-topup-playwright-automation/actions/workflows/playwright.yml/badge.svg)](https://github.com/FolkFizz/mobile-topup-playwright-automation/actions/workflows/playwright.yml)
+
 # Mobile TopUp Store - Automated Testing Portfolio
 
 Automated End-to-End (E2E) testing framework for a Mobile TopUp application.
