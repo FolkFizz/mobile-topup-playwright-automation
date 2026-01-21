@@ -5,6 +5,8 @@
 Automated End-to-End (E2E) testing framework for a Mobile TopUp application.
 Built with **Playwright**, **TypeScript**, and **Page Object Model (POM)** design pattern.
 
+**Target Application:** [https://mobile-topup-store.onrender.com](https://mobile-topup-store.onrender.com)
+
 ## Test Results (Allure Report)
 ![Allure Report Dashboard](./screenshots/allure-report.png)
 
