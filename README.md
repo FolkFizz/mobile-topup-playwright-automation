@@ -1,4 +1,4 @@
-# Mobile TopUp Automation Sandbox
+# Mobile TopUp Playwright Automation Testing
 
 [![Playwright Tests](https://github.com/FolkFizz/mobile-topup-playwright-automation/actions/workflows/playwright.yml/badge.svg)](https://github.com/FolkFizz/mobile-topup-playwright-automation/actions/workflows/playwright.yml)
 ![Allure Report](https://img.shields.io/badge/Allure_Report-Enabled-999999?style=flat&logo=qameta&logoColor=white)
@@ -9,17 +9,17 @@ A robust, production-grade E2E automation framework verifying functional, securi
 
 ---
 
-## 🎯 Execution Highlights (Latest Run)
+## Execution Highlights (Latest Run)
 
 > **"Quality over Quantity, Stability over Speed"**
 
-This framework successfully executed **213 test scenarios** across Desktop and Mobile configurations with a **100% Pass Rate** on executed tests.
+This framework successfully executed **213 test scenarios** across Desktop and Mobile configurations with a **97.18% Pass Rate** on executed tests.
 
 <p align="center">
   <img src="screenshots/dashboard-success.png" alt="Dashboard Success" width="800"/>
 </p>
 
-### 📊 Key Metrics
+### Key Metrics
 
 - **Total Scenarios:** 213
 - **Passed:** 207 ✅
@@ -29,7 +29,7 @@ This framework successfully executed **213 test scenarios** across Desktop and M
 
 ---
 
-## 📱 Device Matrix & Architecture Decisions
+## Device Matrix & Architecture Decisions
 
 Unlike standard tests that run on a single viewport, this framework dynamically generates test suites for **70+ Device Profiles** (iPhone, Pixel, etc.) to ensure responsive design integrity.
 
@@ -41,7 +41,7 @@ Unlike standard tests that run on a single viewport, this framework dynamically 
   <img src="screenshots/device-matrix-2.png" alt="Device Matrix Details" width="700"/>
 </p>
 
-### 🏗️ Architecture Decision: Firefox Mobile Exclusion
+### Architecture Decision: Firefox Mobile Exclusion
 
 You will notice 6 skipped tests regarding Firefox Mobile.
 
@@ -51,7 +51,7 @@ You will notice 6 skipped tests regarding Firefox Mobile.
 
 ---
 
-## 🛡️ Stability & Resilience (Self-Healing)
+## Stability & Resilience (Self-Healing)
 
 Mobile emulation is prone to rendering flakiness (timeouts, animation lags). This framework implements a **Smart Retry Strategy** (`retries: 2`).
 
@@ -63,7 +63,7 @@ Mobile emulation is prone to rendering flakiness (timeouts, animation lags). Thi
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Core Framework:** Playwright, TypeScript, Page Object Model (POM)
 - **Specialized Tools:**
@@ -73,7 +73,7 @@ Mobile emulation is prone to rendering flakiness (timeouts, animation lags). Thi
 
 ---
 
-## 🧪 Test Coverage Strategy
+## Test Coverage Strategy
 
 | Coverage Area | What It Validates |
 |:--------------|:------------------|
@@ -86,7 +86,7 @@ Mobile emulation is prone to rendering flakiness (timeouts, animation lags). Thi
 
 ---
 
-## 🐛 Known Bugs (Automation Findings)
+## Known Bugs (Automation Findings)
 
 | Severity | Defect Description | Status |
 |:---------|:-------------------|:-------|
@@ -96,7 +96,7 @@ Mobile emulation is prone to rendering flakiness (timeouts, animation lags). Thi
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 mobile-topup-playwright-automation/
@@ -118,7 +118,7 @@ mobile-topup-playwright-automation/
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
 ### 1. Standard Execution
 
@@ -148,7 +148,7 @@ npx playwright test tests/a11y/accessibility.spec.ts
 npx playwright test tests/api/security.spec.ts
 ```
 
-### 3. 📊 Generate & View Allure Report (Recommended)
+### 3. Generate & View Allure Report (Recommended)
 
 This project uses Allure Report for detailed visualization.
 
@@ -164,10 +164,11 @@ npx allure open allure-report
 
 ---
 
-## 📝 License
+## License
 
 This project is for demonstration and portfolio purposes.
 
-## 👤 Author
+## Author
 
-Created as part of a QA automation portfolio showcase.
+**Folk (FolkFizz)**
+- GitHub: [github.com/FolkFizz](https://github.com/FolkFizz)
