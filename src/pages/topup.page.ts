@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { BasePage } from './base.page';
 
 export type PaymentMethod = 'credit_card' | 'wallet' | 'qr';
@@ -129,7 +129,10 @@ export class TopupPage extends BasePage {
   }
 
   async confirmPayment(): Promise<void> {
-    await this.confirmButton.click();
+    await this.page.mouse.click(0, 0);
+    await expect(this.confirmButton).toBeEnabled();
+    await this.confirmButton.scrollIntoViewIfNeeded();
+    await this.confirmButton.click({ force: true });
   }
 
   async openHistory(): Promise<void> {
