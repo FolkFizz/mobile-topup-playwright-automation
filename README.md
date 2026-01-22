@@ -43,7 +43,7 @@ Unlike standard tests that run on a single viewport, this framework dynamically 
 
 ### Architecture Decision: Firefox Mobile Exclusion
 
-You will notice 6 skipped tests regarding Firefox Mobile.
+Mobile tests in this framework are explicitly scoped to **Chromium** and **WebKit** engines.
 
 - **Context:** Playwright's mobile emulation (`isMobile: true`) relies on specific Chrome DevTools Protocols (CDP) to simulate touch events and viewports accurately.
 - **Challenge:** The Firefox (Gecko) engine currently has limited support for these touch emulation primitives. Forcing it often results in "false negatives" (engine errors, not app errors).
