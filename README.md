@@ -170,5 +170,5 @@ This project is for demonstration and portfolio purposes.
 
 ## Author
 
-**Folk (FolkFizz)**
+**Tanakrit Eiadra (FolkFizz)**
 - GitHub: [github.com/FolkFizz](https://github.com/FolkFizz)
