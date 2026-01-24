@@ -1,7 +1,7 @@
 import { test, expect, Page, APIRequestContext } from '@playwright/test';
 import { AuthController } from '../../src/api/auth.controller';
 import { LoginPage } from '../../src/pages/login.page';
-import { TopupPage } from '../../src/pages/topup.page';
+import { OrderPage } from '../../src/pages/order.page';
 import { randomEmail, randomPhone } from '../../src/utils/generator';
 
 function attachDialogListener(page: Page): () => string | null {
@@ -13,7 +13,7 @@ function attachDialogListener(page: Page): () => string | null {
   return () => message;
 }
 
-async function loginWithNewUser(page: Page, request: APIRequestContext): Promise<TopupPage> {
+async function loginWithNewUser(page: Page, request: APIRequestContext): Promise<OrderPage> {
   const auth = new AuthController(request);
   const email = randomEmail('neg');
   const password = 'Pass1234';
@@ -22,22 +22,22 @@ async function loginWithNewUser(page: Page, request: APIRequestContext): Promise
   expect(response.status()).toBe(201);
 
   const loginPage = new LoginPage(page);
-  const topupPage = new TopupPage(page);
+  const orderPage = new OrderPage(page);
 
   await loginPage.goto();
   await loginPage.login(email, password);
-  await expect(topupPage.storeView).toBeVisible();
+  await expect(orderPage.storeView).toBeVisible();
 
-  return topupPage;
+  return orderPage;
 }
 
 test.describe('Checkout Negative Tests', () => {
   test('No package selected shows validation or error', async ({ page, request }) => {
     const getDialogMessage = attachDialogListener(page);
-    const topupPage = await loginWithNewUser(page, request);
+    const orderPage = await loginWithNewUser(page, request);
 
     await test.step('Unset package selection if possible', async () => {
-      await topupPage.packageSelect.evaluate((el) => {
+      await orderPage.packageSelect.evaluate((el) => {
         const select = el as HTMLSelectElement;
         select.selectedIndex = -1;
         select.value = '';
@@ -45,7 +45,7 @@ test.describe('Checkout Negative Tests', () => {
       });
     });
 
-    const packageCleared = await topupPage.packageSelect.evaluate((el) => {
+    const packageCleared = await orderPage.packageSelect.evaluate((el) => {
       const select = el as HTMLSelectElement;
       return select.selectedIndex === -1 || select.value === '';
     });
@@ -54,17 +54,17 @@ test.describe('Checkout Negative Tests', () => {
     }
 
     await test.step('Attempt to proceed without package', async () => {
-      await topupPage.fillPhone(randomPhone());
-      await topupPage.selectPaymentMethod('credit_card');
-      await topupPage.acceptTerms();
+      await orderPage.fillPhone(randomPhone());
+      await orderPage.selectPaymentMethod('credit_card');
+      await orderPage.acceptTerms();
 
-      const disabled = await topupPage.confirmButton.isDisabled();
+      const disabled = await orderPage.confirmButton.isDisabled();
       if (disabled) {
         expect(disabled).toBe(true);
         return;
       }
 
-      await topupPage.confirmPayment();
+      await orderPage.confirmPayment();
     });
 
     await test.step('Verify blocking feedback', async () => {
@@ -73,24 +73,24 @@ test.describe('Checkout Negative Tests', () => {
         expect(dialogMessage.toLowerCase()).toContain('package');
         return;
       }
-      await expect(topupPage.modalError).toBeVisible();
-      await expect(topupPage.modalErrorReason).toContainText(/Invalid payload|package|select/i);
+      await expect(orderPage.modalError).toBeVisible();
+      await expect(orderPage.modalErrorReason).toContainText(/Invalid payload|package|select/i);
     });
   });
 
   test('Invalid mobile number blocks checkout', async ({ page, request }) => {
     const getDialogMessage = attachDialogListener(page);
-    const topupPage = await loginWithNewUser(page, request);
+    const orderPage = await loginWithNewUser(page, request);
 
     await test.step('Select package and enter invalid phone', async () => {
-      await topupPage.selectPackageByValue('1199');
-      await topupPage.fillPhone('123');
-      await topupPage.selectPaymentMethod('credit_card');
-      await topupPage.acceptTerms();
+      await orderPage.selectPackageByValue('1199');
+      await orderPage.fillPhone('123');
+      await orderPage.selectPaymentMethod('credit_card');
+      await orderPage.acceptTerms();
     });
 
     await test.step('Attempt to confirm payment', async () => {
-      await topupPage.confirmPayment();
+      await orderPage.confirmPayment();
     });
 
     await test.step('Verify phone validation error', async () => {
@@ -100,8 +100,8 @@ test.describe('Checkout Negative Tests', () => {
         return;
       }
 
-      await expect(topupPage.phoneError).toBeVisible();
-      await expect(topupPage.phoneError).toContainText('valid');
+      await expect(orderPage.phoneError).toBeVisible();
+      await expect(orderPage.phoneError).toContainText('valid');
     });
   });
 });

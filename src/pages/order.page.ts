@@ -3,7 +3,7 @@ import { BasePage } from './base.page';
 
 export type PaymentMethod = 'credit_card' | 'wallet' | 'qr';
 
-export class TopupPage extends BasePage {
+export class OrderPage extends BasePage {
   readonly storeView: Locator;
   readonly userDisplay: Locator;
   readonly historyButton: Locator;

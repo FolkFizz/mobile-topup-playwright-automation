@@ -1,11 +1,11 @@
-# Mobile TopUp Playwright Automation Testing
+# Mobile Internet Service Playwright Automation
 
-[![Playwright Tests](https://github.com/FolkFizz/mobile-topup-playwright-automation/actions/workflows/playwright.yml/badge.svg)](https://github.com/FolkFizz/mobile-topup-playwright-automation/actions/workflows/playwright.yml)
+[![Playwright Tests](https://github.com/FolkFizz/mobile-internet-service-playwright-automation/actions/workflows/playwright.yml/badge.svg)](https://github.com/FolkFizz/mobile-internet-service-playwright-automation/actions/workflows/playwright.yml)
 ![Allure Report](https://img.shields.io/badge/Allure_Report-Enabled-999999?style=flat&logo=qameta&logoColor=white)
 
 A robust, production-grade E2E automation framework verifying functional, security, and accessibility standards.
 
-**Target Application:** https://mobile-topup-store.onrender.com
+**Target Application:** https://mobile-internet-service-sandbox.onrender.com
 
 ---
 
@@ -90,7 +90,7 @@ Mobile emulation is prone to rendering flakiness (timeouts, animation lags). Thi
 
 | Severity | Defect Description | Status |
 |:---------|:-------------------|:-------|
-| **Critical** | API `/api/topup` accepts requests without Auth Token (Security flaw) | Open (Expected failure) |
+| **Critical** | API `/api/order` accepts requests without Auth Token (Security flaw) | Open (Expected failure) |
 | **Serious** | Login button contrast ratio (3.76) fails WCAG AA standard | Open (Expected failure) |
 | **Serious** | Modal overlay has `aria-hidden` focus issues (aria-hidden-focus) | Open (Expected failure) |
 
@@ -99,7 +99,7 @@ Mobile emulation is prone to rendering flakiness (timeouts, animation lags). Thi
 ## Project Structure
 
 ```
-mobile-topup-playwright-automation/
+mobile-internet-service-playwright-automation/
 ├── src/
 │   ├── api/
 │   ├── pages/

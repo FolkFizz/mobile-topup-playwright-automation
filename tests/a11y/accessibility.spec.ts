@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { AuthController } from '../../src/api/auth.controller';
 import { LoginPage } from '../../src/pages/login.page';
-import { TopupPage } from '../../src/pages/topup.page';
+import { OrderPage } from '../../src/pages/order.page';
 import { randomEmail } from '../../src/utils/generator';
 
 test.describe('Accessibility (WCAG 2.1)', () => {
@@ -35,11 +35,11 @@ test.describe('Accessibility (WCAG 2.1)', () => {
     expect(response.status()).toBe(201);
 
     const loginPage = new LoginPage(page);
-    const topupPage = new TopupPage(page);
+    const orderPage = new OrderPage(page);
 
     await loginPage.goto();
     await loginPage.login(email, password);
-    await expect(topupPage.storeView).toBeVisible();
+    await expect(orderPage.storeView).toBeVisible();
 
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);

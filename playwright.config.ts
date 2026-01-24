@@ -30,7 +30,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'https://mobile-topup-store.onrender.com',
+    baseURL: 'https://mobile-internet-service-sandbox.onrender.com',
     actionTimeout: 15000,
     navigationTimeout: 30000,
 

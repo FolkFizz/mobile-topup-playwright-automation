@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('API Security Tests', () => {
-  test('Unauthorized access to /api/topup is rejected', async ({ request }) => {
+  test('Unauthorized access to /api/order is rejected', async ({ request }) => {
     test.fail(
       true,
-      'SECURITY FLAW: API accepts topup without token (Returns 200 instead of 401). Pending Fix.'
+      'SECURITY FLAW: API accepts order without token (Returns 200 instead of 401). Pending Fix.'
     );
 
-    const response = await request.post('/api/topup', {
+    const response = await request.post('/api/order', {
       data: {
         email: 'security.qa@example.com',
         package: '5G Max Speed',

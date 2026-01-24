@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { AuthController } from '../../src/api/auth.controller';
 import { LoginPage } from '../../src/pages/login.page';
-import { TopupPage } from '../../src/pages/topup.page';
+import { OrderPage } from '../../src/pages/order.page';
 import { randomEmail, randomPhone } from '../../src/utils/generator';
 
 type ParsedTimestamp = {
@@ -46,7 +46,7 @@ function parseAmount(value: string): number {
 test.describe('Checkout E2E', () => {
   test('Happy path purchase', async ({ page, request }) => {
     const loginPage = new LoginPage(page);
-    const topupPage = new TopupPage(page);
+    const orderPage = new OrderPage(page);
     const auth = new AuthController(request);
     const email = randomEmail('e2e');
     const phone = randomPhone();
@@ -63,37 +63,37 @@ test.describe('Checkout E2E', () => {
     await test.step('Login to the store', async () => {
       await loginPage.goto();
       await loginPage.login(email, password);
-      await expect(topupPage.storeView).toBeVisible();
+      await expect(orderPage.storeView).toBeVisible();
     });
 
     await test.step('Configure the top-up package', async () => {
-      await topupPage.fillPhone(phone);
-      await topupPage.selectPackageByValue('1199');
-      await expect(topupPage.packageSelect).toHaveValue('1199');
-      await topupPage.toggleAddon(true);
-      await expect(topupPage.addonCheckbox).toBeChecked();
-      await expect(topupPage.subtotalValue).toContainText('1,248.00');
+      await orderPage.fillPhone(phone);
+      await orderPage.selectPackageByValue('1199');
+      await expect(orderPage.packageSelect).toHaveValue('1199');
+      await orderPage.toggleAddon(true);
+      await expect(orderPage.addonCheckbox).toBeChecked();
+      await expect(orderPage.subtotalValue).toContainText('1,248.00');
     });
 
     await test.step('Select payment method and confirm', async () => {
-      await topupPage.selectPaymentMethod('credit_card');
-      await expect(topupPage.paymentCredit).toBeChecked();
-      await topupPage.acceptTerms();
-      await expect(topupPage.confirmButton).toBeEnabled();
-      await topupPage.confirmPayment();
+      await orderPage.selectPaymentMethod('credit_card');
+      await expect(orderPage.paymentCredit).toBeChecked();
+      await orderPage.acceptTerms();
+      await expect(orderPage.confirmButton).toBeEnabled();
+      await orderPage.confirmPayment();
     });
 
     await test.step('Verify success modal with transaction ID', async () => {
-      await expect(topupPage.modalSuccess).toBeVisible();
-      await expect(topupPage.modalTxnId).toHaveText(/TXN-/);
-      await topupPage.closeModalButton.click();
-      await expect(topupPage.modalOverlay).toHaveAttribute('aria-hidden', 'true');
+      await expect(orderPage.modalSuccess).toBeVisible();
+      await expect(orderPage.modalTxnId).toHaveText(/TXN-/);
+      await orderPage.closeModalButton.click();
+      await expect(orderPage.modalOverlay).toHaveAttribute('aria-hidden', 'true');
     });
 
     await test.step('Validate history timestamp and amount', async () => {
-      await topupPage.openHistory();
-      await expect(topupPage.historyView).toBeVisible();
-      const row = topupPage.historyTbody.locator('tr').first();
+      await orderPage.openHistory();
+      await expect(orderPage.historyView).toBeVisible();
+      const row = orderPage.historyTbody.locator('tr').first();
       await expect(row).toBeVisible();
 
       const cells = row.locator('td');

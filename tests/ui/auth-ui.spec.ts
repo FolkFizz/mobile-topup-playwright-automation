@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { AuthController } from '../../src/api/auth.controller';
 import { LoginPage } from '../../src/pages/login.page';
-import { TopupPage } from '../../src/pages/topup.page';
+import { OrderPage } from '../../src/pages/order.page';
 import { randomEmail } from '../../src/utils/generator';
 
 test.describe('Auth UI', () => {
   test('Register and login via UI', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    const topupPage = new TopupPage(page);
+    const orderPage = new OrderPage(page);
     const email = randomEmail('ui');
     const password = 'Pass1234';
 
@@ -25,14 +25,14 @@ test.describe('Auth UI', () => {
 
     await test.step('Login with the new user', async () => {
       await loginPage.login(email, password);
-      await expect(topupPage.storeView).toBeVisible();
-      await expect(topupPage.userDisplay).toContainText(email);
+      await expect(orderPage.storeView).toBeVisible();
+      await expect(orderPage.userDisplay).toContainText(email);
     });
   });
 
   test('Forgot password OTP flow', async ({ page, request }) => {
     const loginPage = new LoginPage(page);
-    const topupPage = new TopupPage(page);
+    const orderPage = new OrderPage(page);
     const auth = new AuthController(request);
     const email = randomEmail('reset');
     const password = 'Pass1234';
@@ -64,8 +64,8 @@ test.describe('Auth UI', () => {
 
     await test.step('Login with the new password', async () => {
       await loginPage.login(email, newPassword);
-      await expect(topupPage.storeView).toBeVisible();
-      await expect(topupPage.userDisplay).toContainText(email);
+      await expect(orderPage.storeView).toBeVisible();
+      await expect(orderPage.userDisplay).toContainText(email);
     });
   });
 });

@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import { AuthController } from '../../src/api/auth.controller';
 import { LoginPage } from '../../src/pages/login.page';
-import { PaymentMethod, TopupPage } from '../../src/pages/topup.page';
+import { PaymentMethod, OrderPage } from '../../src/pages/order.page';
 import { randomEmail, randomPhone } from '../../src/utils/generator';
 
 type CheckoutScenario = {
@@ -36,8 +36,8 @@ function parseAmount(value: string): number {
   return Number(value.replace(/,/g, '').trim());
 }
 
-async function selectPackageByName(page: Page, topupPage: TopupPage, name: string): Promise<void> {
-  const value = await topupPage.packageSelect.evaluate((el, packageName) => {
+async function selectPackageByName(page: Page, orderPage: OrderPage, name: string): Promise<void> {
+  const value = await orderPage.packageSelect.evaluate((el, packageName) => {
     const select = el as HTMLSelectElement;
     const option = Array.from(select.options).find(
       (item) => (item as HTMLOptionElement).dataset.name === packageName
@@ -49,10 +49,10 @@ async function selectPackageByName(page: Page, topupPage: TopupPage, name: strin
     throw new Error(`Package not found: ${name}`);
   }
 
-  await topupPage.selectPackageByValue(value);
+  await orderPage.selectPackageByValue(value);
 }
 
-async function loginWithNewUser(page: Page): Promise<TopupPage> {
+async function loginWithNewUser(page: Page): Promise<OrderPage> {
   const auth = new AuthController(page.request);
   const email = randomEmail('data');
   const password = 'Pass1234';
@@ -61,47 +61,47 @@ async function loginWithNewUser(page: Page): Promise<TopupPage> {
   expect(response.status()).toBe(201);
 
   const loginPage = new LoginPage(page);
-  const topupPage = new TopupPage(page);
+  const orderPage = new OrderPage(page);
 
   await loginPage.goto();
   await loginPage.login(email, password);
-  await expect(topupPage.storeView).toBeVisible();
+  await expect(orderPage.storeView).toBeVisible();
 
-  return topupPage;
+  return orderPage;
 }
 
 test.describe('Checkout Data-Driven Tests', () => {
   for (const data of testData) {
     test(`Purchase ${data.packageName} via ${data.paymentMethod}`, async ({ page }) => {
-      const topupPage = await loginWithNewUser(page);
+      const orderPage = await loginWithNewUser(page);
       const discountedPrice = data.discountCode === 'QA10' ? data.price * 0.9 : data.price;
       const expectedTotal = Number((discountedPrice * 1.07).toFixed(2));
 
       await test.step('Configure package and payment', async () => {
-        await selectPackageByName(page, topupPage, data.packageName);
-        await expect(topupPage.packageSelect).toHaveValue(String(data.price));
+        await selectPackageByName(page, orderPage, data.packageName);
+        await expect(orderPage.packageSelect).toHaveValue(String(data.price));
         if (data.discountCode) {
-          await topupPage.discountInput.fill(data.discountCode);
-          await topupPage.discountInput.blur();
+          await orderPage.discountInput.fill(data.discountCode);
+          await orderPage.discountInput.blur();
         }
-        await topupPage.fillPhone(randomPhone());
-        await topupPage.selectPaymentMethod(data.paymentMethod);
-        await expect(topupPage.totalValue).toContainText(formatThb(expectedTotal));
-        await topupPage.acceptTerms();
+        await orderPage.fillPhone(randomPhone());
+        await orderPage.selectPaymentMethod(data.paymentMethod);
+        await expect(orderPage.totalValue).toContainText(formatThb(expectedTotal));
+        await orderPage.acceptTerms();
       });
 
       await test.step('Confirm payment and verify success', async () => {
-        await topupPage.confirmPayment();
-        await expect(topupPage.modalSuccess).toBeVisible();
-        await expect(topupPage.modalTxnId).toHaveText(/TXN-/);
-        await topupPage.closeModalButton.click();
-        await expect(topupPage.modalOverlay).toHaveAttribute('aria-hidden', 'true');
+        await orderPage.confirmPayment();
+        await expect(orderPage.modalSuccess).toBeVisible();
+        await expect(orderPage.modalTxnId).toHaveText(/TXN-/);
+        await orderPage.closeModalButton.click();
+        await expect(orderPage.modalOverlay).toHaveAttribute('aria-hidden', 'true');
       });
 
       await test.step('Verify history reflects correct amount', async () => {
-        await topupPage.openHistory();
-        await expect(topupPage.historyView).toBeVisible();
-        const row = topupPage.historyTbody.locator('tr').first();
+        await orderPage.openHistory();
+        await expect(orderPage.historyView).toBeVisible();
+        const row = orderPage.historyTbody.locator('tr').first();
         await expect(row).toBeVisible();
 
         const cells = row.locator('td');

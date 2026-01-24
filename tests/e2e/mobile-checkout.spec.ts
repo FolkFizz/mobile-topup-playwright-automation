@@ -1,7 +1,7 @@
 import { test, expect, devices } from '@playwright/test';
 import { AuthController } from '../../src/api/auth.controller';
 import { LoginPage } from '../../src/pages/login.page';
-import { TopupPage } from '../../src/pages/topup.page';
+import { OrderPage } from '../../src/pages/order.page';
 import { randomEmail, randomPhone } from '../../src/utils/generator';
 
 const targetDevices = Object.keys(devices).filter(
@@ -26,22 +26,22 @@ test.describe('Mobile Checkout - Device Matrix', () => {
         expect(response.status()).toBe(201);
 
         const loginPage = new LoginPage(page);
-        const topupPage = new TopupPage(page);
+        const orderPage = new OrderPage(page);
 
         await loginPage.goto();
         await loginPage.login(email, password);
-        await expect(topupPage.storeView).toBeVisible();
+        await expect(orderPage.storeView).toBeVisible();
 
-        await topupPage.selectPackageByValue('1199');
-        await topupPage.discountInput.fill('QA10');
-        await topupPage.discountInput.blur();
-        await topupPage.fillPhone(phone);
-        await topupPage.selectPaymentMethod('credit_card');
-        await topupPage.acceptTerms();
-        await topupPage.confirmPayment();
+        await orderPage.selectPackageByValue('1199');
+        await orderPage.discountInput.fill('QA10');
+        await orderPage.discountInput.blur();
+        await orderPage.fillPhone(phone);
+        await orderPage.selectPaymentMethod('credit_card');
+        await orderPage.acceptTerms();
+        await orderPage.confirmPayment();
 
-        await expect(topupPage.modalSuccess).toBeVisible();
-        await expect(topupPage.modalTxnId).toHaveText(/TXN-/);
+        await expect(orderPage.modalSuccess).toBeVisible();
+        await expect(orderPage.modalTxnId).toHaveText(/TXN-/);
       } finally {
         await context.close();
       }
