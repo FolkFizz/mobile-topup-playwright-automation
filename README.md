@@ -11,8 +11,6 @@ A robust, production-grade E2E automation framework verifying functional, securi
 
 ## Execution Highlights (Latest Run)
 
-> **"Quality over Quantity, Stability over Speed"**
-
 This framework successfully executed **213 test scenarios** across Desktop and Mobile configurations with a **97.18% Pass Rate** on executed tests.
 
 <p align="center">
