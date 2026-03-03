@@ -29,7 +29,7 @@ This framework successfully executed **213 test scenarios** across Desktop and M
 
 ## Device Matrix & Architecture Decisions
 
-Unlike standard tests that run on a single viewport, this framework dynamically generates test suites for **70+ Device Profiles** (iPhone, Pixel, etc.) to ensure responsive design integrity.
+Unlike standard tests that run on a single viewport, this framework dynamically generates test suites for **72 Device Profiles** (iPhone, Pixel, etc.) to ensure responsive design integrity.
 
 <p align="center">
   <img src="screenshots/device-matrix-1.png" alt="Device Matrix List" width="700"/>
@@ -38,6 +38,13 @@ Unlike standard tests that run on a single viewport, this framework dynamically 
 <p align="center">
   <img src="screenshots/device-matrix-2.png" alt="Device Matrix Details" width="700"/>
 </p>
+
+**Verified count (March 3, 2026):**
+
+```bash
+node -e "const {devices}=require('@playwright/test'); console.log(Object.keys(devices).filter(n=>n.includes('iPhone')||n.includes('Pixel')).length)"
+# => 72
+```
 
 ### Architecture Decision: Firefox Mobile Exclusion
 
@@ -91,6 +98,13 @@ Mobile emulation is prone to rendering flakiness (timeouts, animation lags). Thi
 | **Critical** | API `/api/order` accepts requests without Auth Token (Security flaw) | Open (Expected failure) |
 | **Serious** | Login button contrast ratio (3.76) fails WCAG AA standard | Open (Expected failure) |
 | **Serious** | Modal overlay has `aria-hidden` focus issues (aria-hidden-focus) | Open (Expected failure) |
+
+---
+
+## Accessibility Expected-Fail Policy
+
+`tests/a11y/accessibility.spec.ts` intentionally uses `test.fail(true, ...)` for known WCAG issues.  
+These are **Known-Bug-as-Test** checks: failures are expected until the underlying defects are fixed, and they serve as continuous evidence/guardrails for accessibility debt.
 
 ---
 

@@ -7,6 +7,7 @@ import { randomEmail } from '../../src/utils/generator';
 
 test.describe('Accessibility (WCAG 2.1)', () => {
   test('Login page accessibility', async ({ page }) => {
+    // Intentional known-bug guard: keep this test as expected-fail until the contrast defect is fixed.
     test.fail(
       true,
       'WCAG Violation: Login button contrast ratio (3.76) is below AA standard (4.5).'
@@ -22,6 +23,7 @@ test.describe('Accessibility (WCAG 2.1)', () => {
   });
 
   test('Store page accessibility', async ({ page, request }) => {
+    // Intentional known-bug guard: keep this test as expected-fail until aria-hidden focus handling is fixed.
     test.fail(
       true,
       'WCAG Violation: Hidden modal overlay contains focusable elements (aria-hidden-focus).'
